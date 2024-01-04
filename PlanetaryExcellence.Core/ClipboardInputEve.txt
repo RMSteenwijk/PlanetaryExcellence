@@ -1,0 +1,17 @@
+﻿Eve wallet BUY
+2023.12.30 14:21	13.386	Bacteria	525 ISK	-7.026.311 ISK	Darkon Chameleon	Jita IV - Moon 4 - Caldari Navy Assembly Plant
+2023.12.30 14:21	12.300	Bacteria	525 ISK	-6.456.270 ISK	BrokenArm	Jita IV - Moon 4 - Caldari Navy Assembly Plant
+2023.12.30 14:21	15.774	Bacteria	525 ISK	-8.279.773 ISK	alt Utrigas	Jita IV - Moon 4 - Caldari Navy Assembly Plant
+2023.12.30 14:21	8.540	Bacteria	525 ISK	-4.482.646 ISK	0x08hw23	Jita IV - Moon 4 - Caldari Navy Assembly Plant
+Eve wallet SELL
+2023.12.30 14:20	644	Transcranial Microcontrollers	104.700 ISK	67.426.800 ISK	Padme Katelo	Jita IV - Moon 4 - Caldari Navy Assembly Plant
+2023.12.30 14:20	1.261	Transcranial Microcontrollers	104.600 ISK	131.900.600 ISK	Infinitus Dark	Jita IV - Moon 4 - Caldari Navy Assembly Plant
+2023.12.30 14:19	906	Transcranial Microcontrollers	104.600 ISK	94.767.600 ISK	Padme Katelo	Jita IV - Moon 4 - Caldari Navy Assembly Plant
+
+Janice						
+Bacteria	25000	0.19	500.00	524.00
+Biofuels	25000	0.19	322.50	333.00
+Precious Metals	25000	0.19	800.00	845.50
+Reactive Metals	25000	0.19	530.00	540.00
+
+
