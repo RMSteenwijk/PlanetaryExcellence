@@ -91,6 +91,11 @@ namespace PlanetaryExcellence.Core
             Characters.Delete(character.Id);
         }
 
+        public void DeleteTradeRecord(TradeRecord tradeRecord)
+        {
+            TradeRecords.Delete(tradeRecord.Id);
+        }
+
         public List<PlanetRun> ListAllRunsOfCharacter(ObjectId characterId)
         {
             return Instance.GetCollection<Character>("Characters")
@@ -104,6 +109,12 @@ namespace PlanetaryExcellence.Core
             return PlanetRuns
                 .Include(c => c.Trades)
                 .FindById(planetRunId);
+        }
+
+        public TradeRecord GetTradeRecordById(ObjectId tradeRecordId)
+        {
+            return TradeRecords
+                .FindById(tradeRecordId);
         }
 
         public List<PlanetRun> ListAllRuns()

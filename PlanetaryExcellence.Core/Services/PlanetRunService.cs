@@ -117,7 +117,7 @@ namespace PlanetaryExcellence.Core.Services
             MainApplication.PIRunsMenu(_serviceProvider);
         }
 
-        public void RecordTrade()
+        public void AddTradeRecord()
         {
             using var storage = new Storage();
             var chosenCharacter = _characterService.SelectionScreen(() => MainApplication.PIRunsMenu(_serviceProvider));
@@ -144,12 +144,58 @@ namespace PlanetaryExcellence.Core.Services
                 var markupColor = expense.TotalAmount < 0 ? "red" : "green";
                 table.AddRow(new Markup[] { new Markup(expense.ProductName), new Markup(expense.Quantity.ToString("N")), new Markup($"[{markupColor}]{expense.PerItemPrice.ToString("N")}[/]"), new Markup($"[{markupColor}]{expense.TotalAmount.ToString("N")}[/]") });
             }
-
-            storage.InsertTradeRecordOnRun(chosenPlanetRun, trades);
-
             AnsiConsole.Write(table);
-            AnsiConsole.Confirm("[green]Done?[/]");
+
+            if (AnsiConsole.Confirm("[green]Is this correct?[/]"))
+            {
+                storage.InsertTradeRecordOnRun(chosenPlanetRun, trades);
+            }
             MainApplication.PIRunsMenu(_serviceProvider);
+        }
+
+        public void RemoveTradeRecord()
+        {
+            using var storage = new Storage();
+            var chosenCharacter = _characterService.SelectionScreen(() => MainApplication.PIRunsMenu(_serviceProvider));
+            var chosenPlanetRun = SelectionScreen(chosenCharacter.Id, () => MainApplication.PIRunsMenu(_serviceProvider));
+            var chosenTradeRecord = TradeRecordSelectionScreen(chosenPlanetRun.Id, () => MainApplication.PIRunsMenu(_serviceProvider));
+
+            var table = new Table();
+            table.AddColumns($"Product Name", "Quantity", "perItemPrice", "TotalAmount");
+            table.Columns[1].RightAligned();
+            table.Columns[2].RightAligned();
+            table.Columns[3].RightAligned();
+
+            var markupColor = chosenTradeRecord.TotalAmount < 0 ? "red" : "green";
+            table.AddRow(new Markup[] { new Markup(chosenTradeRecord.ProductName), new Markup(chosenTradeRecord.Quantity.ToString("N")), new Markup($"[{markupColor}]{chosenTradeRecord.PerItemPrice.ToString("N")}[/]"), new Markup($"[{markupColor}]{chosenTradeRecord.TotalAmount.ToString("N")}[/]") });
+            AnsiConsole.Write(table);
+            AnsiConsole.WriteLine("");
+
+            if (AnsiConsole.Confirm("Do you wish to [red]delete[/] this record?"))
+            {
+                storage.DeleteTradeRecord(chosenTradeRecord);
+            }
+            MainApplication.PIRunsMenu(_serviceProvider);
+        }
+
+        public TradeRecord TradeRecordSelectionScreen(ObjectId planetRunId, Action returnAction)
+        {
+            using var storage = new Storage();
+            var allCurrentRunning = storage.ListTradeRecordsForRun(planetRunId);
+            var SelectionNames = allCurrentRunning.Select(x => $"{x.ProductName} x{x.Quantity} - {x.TotalAmount.ToString("N")}").ToList();
+            SelectionNames.Add("<=== Back");
+
+            var selection = AnsiConsole.Prompt(
+              new SelectionPrompt<string>()
+                  .Title("Which planetRun do you wish to select?")
+                  .PageSize(10)
+                  .MoreChoicesText("[grey](Move up and down to reveal more)[/]")
+                  .AddChoices(SelectionNames));
+
+            if (selection == "<=== Back")
+                returnAction.Invoke();
+
+            return storage.GetTradeRecordById(allCurrentRunning.First(x => $"{x.ProductName} x{x.Quantity} - {x.TotalAmount.ToString("N")}" == selection).Id);
         }
 
         public PlanetRun SelectionScreen(ObjectId characterId, Action returnAction)

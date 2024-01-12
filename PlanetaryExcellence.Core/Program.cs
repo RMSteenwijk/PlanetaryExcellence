@@ -2,6 +2,8 @@
 using PlanetaryExcellence.Core;
 using PlanetaryExcellence.Core.Services;
 using Spectre.Console;
+using System;
+using System.Diagnostics;
 
 try
 {
@@ -106,7 +108,7 @@ public class MainApplication
                   .PageSize(10)
                   .MoreChoicesText("[grey](Move up and down to reveal more actions)[/]")
                   .AddChoices(new[] {
-                        "Add PI run", "Edit existing PI Run", "Remove PI run", "Add Trade Records", "Open Janice", "Archive PI run", "<=== Back"
+                        "Add PI run", "Edit existing PI Run", "Remove PI run", "Add Trade Records", "Remove Trade Record", "Open Janice", "Archive PI run", "<=== Back"
                   }));
 
         switch (selection)
@@ -121,12 +123,17 @@ public class MainApplication
                 provider.GetRequiredService<PlanetRunService>().RemovePlanetRun();
                 break;
             case "Add Trade Records":
-                provider.GetRequiredService<PlanetRunService>().RecordTrade();
+                provider.GetRequiredService<PlanetRunService>().AddTradeRecord();
+                break;
+            case "Remove Trade Record":
+                provider.GetRequiredService<PlanetRunService>().RemoveTradeRecord();
                 break;
             case "Archive PI run":
                 provider.GetRequiredService<PlanetRunService>().ArchiveRun();
                 break;
             case "Open Janice":
+                Process.Start(new ProcessStartInfo("cmd", $"/c start https://janice.e-351.com/") { CreateNoWindow = true });
+                PIRunsMenu(provider);
                 break;
             case "<=== Back":
                 MainMenu(provider);
